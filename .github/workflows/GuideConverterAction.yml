@@ -107,13 +107,13 @@ jobs:
         with:
           ref: qa
           repository: test-actions/${{ github.event.inputs.guide_name }}
-          path: Guide-repo
+          path: GuideConverter/Guide-repo
 
       - name: Checkout guides-common repo
         uses: actions/checkout@v2
         with:
           repository: test-actions/guides-common
-          path: Guides-common
+          path: GuideConverter/Guides-common
 
       - uses: actions/setup-java@v1
         with:
