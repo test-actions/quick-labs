@@ -37,19 +37,12 @@ jobs:
         with:
           repository: test-actions/cloud-hosted-guide-converter
           path: GuideConverters
-
-
-          # Any prerequisite steps
-      - uses: actions/checkout@master
         
       - name: Checkout guide repo
         uses: actions/checkout@v2
         with:
-          repository: test-actions/${{ github.event.inputs.guide_name }}
+          repository: OpenLiberty/${{ github.event.inputs.guide_name }}
           path: Guide-repo
-
-          # Any prerequisite steps
-      - uses: actions/checkout@master
         
       - name: Checkout guides-common repo
         uses: actions/checkout@v2
