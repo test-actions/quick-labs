@@ -92,6 +92,8 @@ jobs:
 
       # Any prerequisite steps
       - uses: actions/checkout@v2
+        with:
+          ref: staging
         
       - name: Checkout Guide Converter repo
         uses: actions/checkout@v2
