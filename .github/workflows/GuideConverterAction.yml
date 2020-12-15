@@ -69,7 +69,7 @@ jobs:
           git init
           mkdir -p instructions/cloud-hosted-${{ github.event.inputs.guide_name }}/
           rm -f instructions/cloud-hosted-${{ github.event.inputs.guide_name }}/README.md
-          cd GuideConverters
+          cd $GITHUB_WORKSPACE/GuideConverters
           javac CloudHostedGuideConverter.java
           java CloudHostedGuideConverter ${{ github.event.inputs.guide_name }} ${branchName:11}
           rm -f importFunctions.class
