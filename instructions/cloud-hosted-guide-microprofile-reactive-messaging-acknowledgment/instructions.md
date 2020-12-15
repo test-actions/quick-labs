@@ -19,8 +19,8 @@ Messaging ensures that messages aren't lost by requiring that messages that were
 after they are processed. Every message that gets sent out must be acknowledged. This way, any messages that were delivered
 to the target service but not processed, for example, due to a system failure, can be identified and sent again.
 
-The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
-microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
+The application in this guide consists of two microservices, **system** and **inventory**. Every 15 seconds, the **system**
+microservice calculates and publishes events that contain its current average system load. The **inventory** microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
 You can get the current inventory of systems by accessing the **/systems** REST endpoint.
 
@@ -39,10 +39,7 @@ cd guide-microprofile-reactive-messaging-acknowledgment
 {: codeblock}
 
 
-The `start` directory contains the starting project that you will build upon.
-
-The `finish` directory contains the finished project that you will build.
-
+The **start** directory contains the starting project that you will build upon.
 
 The **finish** directory contains the finished project that you will build.
 
@@ -50,11 +47,11 @@ The **finish** directory contains the finished project that you will build.
 
 
 Messages must be acknowledged in reactive applications. Messages are either acknowledged explicitly, or messages are acknowledged
-implicitly by MicroProfile Reactive Messaging. Acknowledgment for incoming messages is controlled by the `@Acknowledgment`
-annotation in MicroProfile Reactive Messaging. If the `@Acknowledgment` annotation isn't explicitly defined, then the
+implicitly by MicroProfile Reactive Messaging. Acknowledgment for incoming messages is controlled by the **@Acknowledgment**
+annotation in MicroProfile Reactive Messaging. If the **@Acknowledgment** annotation isn't explicitly defined, then the
 default acknowledgment strategy applies, which depends on the method signature. Only methods that receive incoming messages
-and are annotated with the `@Incoming` annotation must acknowledge messages. Methods that are annotated only with the
-`@Outgoing` annotation don't need to acknowledge messages because messages aren't being received and MicroProfile Reactive
+and are annotated with the **@Incoming** annotation must acknowledge messages. Methods that are annotated only with the
+**@Outgoing** annotation don't need to acknowledge messages because messages aren't being received and MicroProfile Reactive
 Messaging requires only that _received_ messages are acknowledged.
 
 Almost all of the methods in this application that require message acknowledgment are assigned the **POST_PROCESSING** strategy
@@ -84,7 +81,7 @@ property doesn’t exist and a property response isn't returned, the method fini
 message must be acknowledged immediately.
 
 This case where a message either needs to be acknowledged immediately or some time later is one of the situations where
-the `MANUAL` acknowledgment strategy would be beneficial
+the **MANUAL** acknowledgment strategy would be beneficial
 
 # Implementing the MANUAL acknowledgment strategy
 
@@ -184,8 +181,8 @@ public class SystemService {
 The **sendProperty()** method needs to manually acknowledge the incoming messages, so it is
 annotated with the **@Acknowledgment(Acknowledgment.Strategy.MANUAL)**
 annotation. This annotation sets the method up to expect an incoming message. To meet the requirements of acknowledgment,
-the method parameter is updated to receive and return a `Message` of type `String`, rather
-than just a `String`. Then, the message `payload` is extracted and checked for validity.
+the method parameter is updated to receive and return a **Message** of type **String**, rather
+than just a **String**. Then, the message **payload** is extracted and checked for validity.
 One of the following outcomes occurs:
 
     - If the system property **isn't valid**, the method **acknowledges**
@@ -195,6 +192,7 @@ One of the following outcomes occurs:
         requested system property and sends it to the proper channel. The method acknowledges the incoming message only
         after the sent message is acknowledged.
 
+# Waiting for a message to be acknowledged
 
 
 The **inventory** service contains an endpoint that accepts **PUT** requests. When a **PUT** request that contains a system property
@@ -363,10 +361,6 @@ public class InventoryResource {
 ```
 {: codeblock}
 
-The `sendPropertyName()` method is updated to return a
-`Message<String>` instead of just a `String`. This return type allows the method to set a callback
-that runs after the outgoing message is acknowledged. In addition to updating the `sendPropertyName()`
-method, the `propertyNameEmitter` variable is updated to send a `Message<String>` type.
 
 The **sendPropertyName()** method is updated to return a
 **Message<String>** instead of just a **String**. This return type allows the method to set a callback
@@ -383,11 +377,11 @@ code after the variable is completed in the **callback** function.
 
 # Building and running the application
 
-Build the `system` and `inventory` microservices using Maven and then run them in Docker containers.
+Build the **system** and **inventory** microservices using Maven and then run them in Docker containers.
 
 Start your Docker environment. Dockerfiles are provided for you to use.
 
-To build the application, run the Maven `install` and `package` goals from the command-line session in the `start` directory:
+To build the application, run the Maven **install** and **package** goals from the command-line session in the **start** directory:
 
 ```
 mvn -pl models install
@@ -412,9 +406,10 @@ docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 {: codeblock}
 
+
 Next, use the provided script to start the application in Docker containers. The script creates a network for the
 containers to communicate with each other. It also creates containers for Kafka, Zookeeper, and the microservices in the
-project. For simplicity, the script starts one instance of the `system` service.
+project. For simplicity, the script starts one instance of the **system** service.
 
 
 ```
@@ -427,8 +422,8 @@ project. For simplicity, the script starts one instance of the `system` service.
 
 # Testing the application
 
-After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
-of the `inventory` service.
+After the application is up and running, you can access the application by making a GET request to the **/systems** endpoint
+of the **inventory** service.
 
 Go to the [](http://localhost:9085/inventory/systems) URL to access the inventory microservice You see the CPU **systemLoad**
 
@@ -447,8 +442,8 @@ property for all the systems:
 }
 ```
 
-The `system` service sends messages to the `inventory` service every 15 seconds. The `inventory` service processes and
-acknowledges each incoming message, ensuring that no `system` message is lost.
+The **system** service sends messages to the **inventory** service every 15 seconds. The **inventory** service processes and
+acknowledges each incoming message, ensuring that no **system** message is lost.
 
 If you revisit the 
 ```
@@ -456,8 +451,6 @@ curl http://localhost:9085/inventory/systems
 ```
 {: codeblock}
 
- URL after a while, you notice that the CPU `systemLoad`
-property for the systems changed.
 
  URL after a while, you notice that the CPU **systemLoad**
 property for the systems changed.
@@ -503,7 +496,7 @@ included with the previous values:
 }
 ```
 
-## Tearing down the environment
+# Tearing down the environment
 
 Finally, run the following script to stop the application:
 
@@ -535,29 +528,13 @@ rm -fr guide-microprofile-reactive-messaging-acknowledgment
 
 You developed an application by using MicroProfile Reactive Messaging, Open Liberty, and Kafka.
 
-## Related Links
+# Related Links
 
 Learn more about MicroProfile.
 
-[https://download.eclipse.org/microprofile/microprofile-reactive-messaging-1.0/microprofile-reactive-messaging-spec.html](View the MicroProfile Reactive Messaging Specification)
+[View the MicroProfile Reactive Messaging Specification](https://download.eclipse.org/microprofile/microprofile-reactive-messaging-1.0/microprofile-reactive-messaging-spec.html)
 
-[https://download.eclipse.org/microprofile/microprofile-reactive-messaging-1.0/apidocs/](View the MicroProfile Reactive Messaging Javadoc)
-
-[https://openliberty.io/docs/latest/microprofile.html](View the MicroProfile)
-
-This is a test for the link. [https://labs.cognitiveclass.ai/tools/theiadocker/lab/tree?md_instructions_url=https://cf-course-data-staging.s3.us-east.cloud-object-storage.appdomain.cloud/acknowledging-messages-using-microprofile-reactive-messaging/instructions.md](Click this link).
-
-[View the MicroProfile](https://openliberty.io/docs/latest/microprofile.html)
-
-This is a test for the link. [Click this link](https://labs.cognitiveclass.ai/tools/theiadocker/lab/tree?md_instructions_url=https://cf-course-data-staging.s3.us-east.cloud-object-storage.appdomain.cloud/acknowledging-messages-using-microprofile-reactive-messaging/instructions.md).
-
-[View the MicroProfile](https://openliberty.io/docs/latest/microprofile.html)
-
-This is a test for the link. [Click this link](https://labs.cognitiveclass.ai/tools/theiadocker/lab/tree?md_instructions_url=https://cf-course-data-staging.s3.us-east.cloud-object-storage.appdomain.cloud/acknowledging-messages-using-microprofile-reactive-messaging/instructions.md).
-
-[View the MicroProfile](https://openliberty.io/docs/latest/microprofile.html)
-
-This is a test for the link. [Click this link](https://labs.cognitiveclass.ai/tools/theiadocker/lab/tree?md_instructions_url=https://cf-course-data-staging.s3.us-east.cloud-object-storage.appdomain.cloud/acknowledging-messages-using-microprofile-reactive-messaging/instructions.md).
+[View the MicroProfile Reactive Messaging Javadoc](https://download.eclipse.org/microprofile/microprofile-reactive-messaging-1.0/apidocs/)
 
 [View the MicroProfile](https://openliberty.io/docs/latest/microprofile.html)
 
