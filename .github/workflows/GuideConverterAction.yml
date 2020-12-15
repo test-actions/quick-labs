@@ -45,7 +45,7 @@ jobs:
       - name: Checkout guide repo
         uses: actions/checkout@v2
         with:
-          repository: OpenLiberty/${{ github.event.inputs.guide_name }}
+          repository: test-actions/${{ github.event.inputs.guide_name }}
           path: Guide-repo
 
           # Any prerequisite steps
