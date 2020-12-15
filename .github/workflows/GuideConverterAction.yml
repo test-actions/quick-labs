@@ -94,27 +94,21 @@ jobs:
     steps:
 
       # Any prerequisite steps
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         
       - name: Checkout Guide Converter repo
         uses: actions/checkout@v2
         with:
           repository: test-actions/cloud-hosted-guide-converter
           path: GuideConverter
-
-
-          # Any prerequisite steps
-      - uses: actions/checkout@master
-        
+          
       - name: Checkout guide repo
         uses: actions/checkout@v2
         with:
+          ref: qa
           repository: test-actions/${{ github.event.inputs.guide_name }}
           path: Guide-repo
 
-          # Any prerequisite steps
-      - uses: actions/checkout@master
-        
       - name: Checkout guides-common repo
         uses: actions/checkout@v2
         with:
